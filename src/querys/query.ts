@@ -17,7 +17,7 @@ export interface mutationProps {
 export interface subscriptionProp {
   queryParam: string;
   variable?: string;
-  onNext: (data?: object) => void;
+  onNext: (value?: object,provider?: object) => void;
   onError?: (errorValue: any) => void;
   onComplete?: () => void;
 }
@@ -41,8 +41,8 @@ export const mutation = async({queryParam, variable, onNext}: mutationProps) => 
 export const subscription = ({queryParam, variable, onNext, onError, onComplete}: subscriptionProp) => {
   const Subscribe = API.graphql(graphqlOperation(queryParam, variable)) as Observable<object>;
   Subscribe.subscribe({
-    next(value: object) {
-      onNext(value);
+    next({value, provider}: {value: object, provider: object}) {
+      onNext(value, provider);
     },
     error(errorValue: any) {
       if(onError) {
