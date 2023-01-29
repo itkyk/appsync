@@ -1,0 +1,28 @@
+{
+  "name": "@itkyk/appsync",
+  "version": "0.0.1@beta0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itkyk/appsync.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itkyk/appsync/issues"
+  },
+  "homepage": "https://github.com/itkyk/appsync#readme",
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "aws-amplify": "^5.0.11"
+  }
+}
