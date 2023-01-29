@@ -91,8 +91,8 @@ const variable = {
   id: 1
 }
 
-const onNext = (data) => {
-  console.log(data);
+const onNext = (value, provider) => {
+  console.log(value, provider);
 }
 
 const onError = (error) => {
