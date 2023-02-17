@@ -102,11 +102,18 @@ const onError = (error) => {
 const onComplete = () => {
   console.log("Subscription Complete");
 }
-subscription({
+const listener = subscription({
   queryParam,
   variable,
   onNext,
   onError,
   onComplete
 })
+
+listener.unsubscribe()
+consoe.log(listener.closed) // -> return boolean
 ```
+
+## Change Log
+- 2023/02/17 (version 1.0.1)
+  - subscription return ZenObservable.Subscription
