@@ -22,15 +22,19 @@ export interface subscriptionProp {
   onComplete?: () => void;
 }
 
-export const query = async({queryParam, variable, onNext}: queryProps) => {
-  const items = await API.graphql(graphqlOperation(queryParam, variable)) as GraphQLResult;
+export interface RequestHeaders {
+  [key: string]: string
+}
+
+export const query = async({queryParam, variable, onNext}: queryProps, headers?: RequestHeaders) => {
+  const items = await API.graphql(graphqlOperation(queryParam, variable), headers || {}) as GraphQLResult;
   const result = items.data || null;
   const errors = items.errors || null;
   onNext(result, errors)
 }
 
-export const mutation = async({queryParam, variable, onNext}: mutationProps) => {
-  const items = await API.graphql(graphqlOperation(queryParam, variable)) as GraphQLResult;
+export const mutation = async({queryParam, variable, onNext}: mutationProps, headers?: RequestHeaders) => {
+  const items = await API.graphql(graphqlOperation(queryParam, variable), headers || {}) as GraphQLResult;
   const result = items.data || null;
   const errors = items.errors || null;
   if (onNext) {
@@ -38,8 +42,8 @@ export const mutation = async({queryParam, variable, onNext}: mutationProps) => 
   }
 }
 
-export const subscription = ({queryParam, variable, onNext, onError, onComplete}: subscriptionProp) => {
-  const Subscribe = API.graphql(graphqlOperation(queryParam, variable)) as Observable<object>;
+export const subscription = ({queryParam, variable, onNext, onError, onComplete}: subscriptionProp, headers?: RequestHeaders) => {
+  const Subscribe = API.graphql(graphqlOperation(queryParam, variable), headers || {}) as Observable<object>;
   return Subscribe.subscribe({
     next({value, provider}: {value: {data: object}, provider: object}) {
       onNext(value.data, provider);

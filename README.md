@@ -41,11 +41,16 @@ const onNext = (data, error) => {
   if (error) return console.error(error);
   console.log(data);
 }
+
+const headers = {
+  "x-sample-header": "ABC123"
+}
+
 query({
   queryParam,
   variable,
   onNext
-})
+}, headers);
 ```
 
 #### mutation
@@ -68,11 +73,16 @@ const onNext = (data, error) => {
   if (error) return console.error(error);
   console.log(data);
 }
+
+const headers = {
+  "x-sample-header": "ABC123"
+}
+
 mutation({
   queryParam,
   variable,
   onNext
-})
+}, headers)
 ```
 
 #### Subscription
@@ -102,18 +112,25 @@ const onError = (error) => {
 const onComplete = () => {
   console.log("Subscription Complete");
 }
+
+const headers = {
+  "x-sample-header": "ABC123"
+}
+
 const listener = subscription({
   queryParam,
   variable,
   onNext,
   onError,
   onComplete
-})
+}, headers)
 
 listener.unsubscribe()
 consoe.log(listener.closed) // -> return boolean
 ```
 
 ## Change Log
+- 2023/03/03 (version 1.0.2)
+  - Added `headers` to the second argument of the `query`/`mutation`/`subscription` method.
 - 2023/02/17 (version 1.0.1)
   - subscription return ZenObservable.Subscription
