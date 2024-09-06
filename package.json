@@ -28,6 +28,6 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "aws-amplify": "^5.0.11"
+    "aws-amplify": "^6.0.0"
   }
 }
