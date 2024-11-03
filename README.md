@@ -23,43 +23,36 @@ export default AmplifyConfig({
 ### FrontEnd
 #### Query
 ```typescript
-import {query, configure} from "@itkyk/appsync";
+import {query, configure, gql} from "@itkyk/appsync";
 import Config from "aws config file path";
 configure(Config);
 
-const queryParam = `query MyQuery($id: ID) {
-  getID(id: $id) {
-    id
-  }
+const queryParam = gql`
+query MyQuery($id: ID) {
+    getID(id: $id) {
+        id
+    }
 }`
 
 const variable = {
   id: 1
 }
 
-const onNext = (data, error) => {
-  if (error) return console.error(error);
-  console.log(data);
-}
-
 const headers = {
   "x-sample-header": "ABC123"
 }
 
-query({
-  queryParam,
-  variable,
-  onNext
-}, headers);
+const response = await query(queryParam, variable , headers);
 ```
 
 #### mutation
 ```typescript
-import {mutation, configure} from "@itkyk/appsync";
+import {mutation, configure, gql} from "@itkyk/appsync";
 import Config from "aws config file path";
 configure(Config);
 
-const queryParam = `mutation MyMutation($id: ID) {
+const queryParam = gql`
+mutation MyMutation($id: ID) {
   addID(id: $id) {
     id
   }
@@ -69,29 +62,21 @@ const variable = {
   id: 1
 }
 
-const onNext = (data, error) => {
-  if (error) return console.error(error);
-  console.log(data);
-}
-
 const headers = {
   "x-sample-header": "ABC123"
 }
 
-mutation({
-  queryParam,
-  variable,
-  onNext
-}, headers)
+const response = await mutation(queryParam, variable, headers);
 ```
 
 #### Subscription
 ```typescript
-import {subscription, configure} from "@itkyk/appsync";
+import {subscription, configure, gql} from "@itkyk/appsync";
 import Config from "aws config file path";
 configure(Config);
 
-const queryParam = `subscription MySubscribe($id: ID) {
+const queryParam = gql`
+subscription MySubscribe($id: ID) {
   addedID(id: $id) {
     id
   }
@@ -117,19 +102,39 @@ const headers = {
   "x-sample-header": "ABC123"
 }
 
-const listener = subscription({
-  queryParam,
-  variable,
+const listener = subscription(
+  queryParam, 
+  variable, 
+  {
   onNext,
   onError,
   onComplete
-}, headers)
+  },
+  headers);
 
 listener.unsubscribe()
 consoe.log(listener.closed) // -> return boolean
 ```
 
+## Global Headers
+
+```typescript
+import {getGlobalHeaders, setGlobalHeaders} from "@itkyk/appsync";
+
+// In the subsequent `query`/` mutation`/`subScribe`, if you do not pass Header, this header will be used.
+setGlobalHeaders({
+  "x-sample-header": "ABC123"
+});
+
+const headers = getGlobalHeaders();
+console.log(headers); // ->  {"x-sample-header": "ABC123"}
+```
+
 ## Change Log
+- 2024/11/03(version 2.0.3)
+  - `Query` and` Mutation` have been set to `Promise`.
+  - Some arguments have been removed or removed.
+  - Header can be set in common as a whole.
 - 2023/03/03 (version 1.0.2)
   - Added `headers` to the second argument of the `query`/`mutation`/`subscription` method.
 - 2023/02/17 (version 1.0.1)
